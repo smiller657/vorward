@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('static/img/spar2.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Created Accounts</h1>
+                        <hr class="small">
+                        <span class="subheading">Are you sure?  Run while you can.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Welcome to the ranks of Vorward users!</h2>
+        {% if unsuccessfulLogin %}
+            <p>Oops!  Looks like your attempt to log in failed. Go back and try again.</p>
+        {% endif %}
+        <div>
+             <table class="table">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Club</th>
+                        <th>Region</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if users != None and users|length > 0 %}
+                        {% for u in users %}
+                            <tr>
+                                <td>{{u.first_name}}</td>
+                                <td>{{u.last_name}}</td>
+                                <td>{{u.club}}</td>
+                                <td>{{u.region}}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+{% endblock %}

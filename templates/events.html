@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('static/img/james.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Events</h1>
+                         <hr class="small">
+                        <h2 class="subheading">Ready, set, mark your calendars!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                {% if eventsAvailable %}
+                    <h3>Upcoming Events:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tournament Name</th>
+                                    <th>Club</th>
+                                    <th>Dates</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in events %}
+                                    <tr>
+                                        <td>{{event.tourney}}</td>
+                                    <td>{{event.club}}</td>
+                                    <td>{{event.dates}}</td>
+                                    <td>{{event.location}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                {% else %}
+                    <h4>Sorry, no events are available at this time.</h4>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+{% endblock %}
