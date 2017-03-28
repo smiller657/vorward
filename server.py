@@ -65,11 +65,7 @@ def tourneyFormPage():
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-    hasEvents = True
-    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
-    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
-    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
-    return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
+    return render_template('tourneyForm.html', user=user)
 
 @app.route('/matchForm')
 def matchFormPage():
