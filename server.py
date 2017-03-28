@@ -32,7 +32,7 @@ def aboutPage():
         'email' : 'governing-council@hemaaliance.com'}
     return render_template('about.html', maintName=maintenanceName, maintEmail=maintenanceEmail, alliance=hemaa, user=user)
     
-@app.route('/events')
+@app.route('/events', methods=['GET', 'POST'])
 def eventPage():
     # Determine if the user is logged in.
     if 'userName' in session:
@@ -43,6 +43,15 @@ def eventPage():
     events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
     {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
     {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
+    if request.form['formType'] == 'eventForm':
+        print("Kevin put your stuff here")
+    elif request.form['formType'] == 'tourneyForm':
+        event=request.form['event']
+        tournament=request.form['tournament']
+        rings=request.form['rings']
+        matchLength=request.form['matchLength']
+        print(event + " " + tournament + " " + rings + " " +  matchLength)
+    
     return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
 
 @app.route('/eventForm')
@@ -56,7 +65,7 @@ def eventFormPage():
     events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
     {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
     {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
-    return render_template('eventForm.html', eventsAvailable=hasEvents, events=events, user=user)
+    return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
 
 @app.route('/tourneyForm')
 def tourneyFormPage():
