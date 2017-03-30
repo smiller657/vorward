@@ -46,6 +46,7 @@ def eventPage():
     if request.form['formType'] == 'eventForm':
         print("Kevin put your stuff here")
     elif request.form['formType'] == 'tourneyForm':
+        # Get info off Tournament form to create a tournament
         event=request.form['event']
         tournament=request.form['tournament']
         rings=request.form['rings']
