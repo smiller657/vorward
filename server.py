@@ -35,16 +35,20 @@ def aboutPage():
 @app.route('/events', methods=['GET', 'POST'])
 def eventPage():
     # Determine if the user is logged in.
+    hasEvents = True    
+    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
+    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
+    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-    hasEvents = True
-    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
-    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
-    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
+	return render_template("events.html",events=events,user=user,eventsAvailable=hasEvents)
     if request.form['formType'] == 'eventForm':
-        print("Kevin put your stuff here")
+        ename=request.form['event']
+	edate=request.form['date']
+	print("Unicode to string " + str(edate))
+	print("Event created with name " + ename)
     elif request.form['formType'] == 'tourneyForm':
         event=request.form['event']
         tournament=request.form['tournament']
