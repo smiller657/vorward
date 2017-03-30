@@ -17,25 +17,25 @@
 
 <!-- Main Content -->
 <div class="container">
-    <form class="form-horizontal" method='POST' action="/eventCreated">
         <h2>Enter the event information:</h2>
         
+        <form class="form-horizontal" method='POST' action="/events">
+        
+         <div class="form-group">
+            <input type="hidden" name="formType" value="eventForm">
+        </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="ename">Event Name:</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="ename" placeholder="Event Name" maxlength="50" required>
+            <label class="control-label col-sm-3" for="event">Event Name:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="event" placeholder="Enter Event Name" maxlength="50" required>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="lname">Event Date:</label>
-            <div class="col-sm-10">
-                <input type="date" class="form-control" name="edate" required>
+            <label class="control-label col-sm-3" for="event">Date of Event:</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" name="date" required>
             </div>
-        </div>
-         
-        
-       
-        
+        </div> 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit"class="btn btn-default">Submit</button>
