@@ -52,7 +52,7 @@ def eventPage():
             print(event_id)
             tours = pg.getTournamentsByEventId(event_id)
             tour_id=request.form['showTourMatch']
-            matches = pg.getMatchesByTourId(tour_id)
+            matches = pg.getMatchResultsByTourId(tour_id)
             print(matches)
             tour_name = pg.getTourNameByTourId(tour_id)
         elif request.form['showTours']:
@@ -62,20 +62,23 @@ def eventPage():
             tours = pg.getTournamentsByEventId(event_id)
             matches = []
         # Get the data off of the event form
-        # elif request.form['eventForm']:
-        #     ename=request.form['event']
-        #     edate=str(request.form['date'])
-        #     pg.createEvent(ename,edate,1)
-        # elif request.form['tourneyForm']:
-        #     # Get info off Tournament form to create a tournament
-        #     event=request.form['event']
-        #     tournament=request.form['tournament']
-        #     rings=request.form['rings']
-        #     matchLength=request.form['matchLength']
-        #     print("making tournament")
-        #     pg.createTournament(event, tournament, matchLength, rings)
-    
-    return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
+        elif request.form['eventForm']:
+            ename=request.form['event']
+            edate=str(request.form['date'])
+            pg.createEvent(ename,edate,1)
+        elif request.form['tourneyForm']:
+            # Get info off Tournament form to create a tournament
+            event=request.form['event']
+            tournament=request.form['tournament']
+            rings=request.form['rings']
+            matchLength=request.form['matchLength']
+            print("making tournament")
+            pg.createTournament(event, tournament, matchLength, rings)
+    if 'userName' in session:
+        user = [session['userName'], session['email']]
+    else:
+        user = ['', '']
+    return render_template("events.html",events=events,event_id=event_id, user=user, tours=tours, tour_id=tour_id, matches=matches, tour_name=tour_name)
 
 
     if 'userName' in session:
