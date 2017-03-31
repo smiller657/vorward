@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+<script>
+    $('.counter').each(function() {
+  var $this = $(this),
+      countTo = $this.attr('data-count');
+  
+  $({ countNum: $this.text()}).animate({
+    countNum: countTo
+  },
+
+  {
+
+    duration: 8000,
+    easing:'linear',
+    step: function() {
+      $this.text(Math.floor(this.countNum));
+    },
+    complete: function() {
+      $this.text(this.countNum);
+      //alert('finished');
+    }
+
+  });  
+  
+  
+
+});
+</script>
+{% block content %}
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('static/img/spar2.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>Your match info</h1>
+                        <hr class="small">
+                        <span class="subheading">Here's what happened:</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+    <h2>Record Book:</h2><br>
+    <div class = "table-responsive">
+    <table class = "table">
+     <tr>
+         <th>Fighter 1 <span style = "color: red">(Points)</span></th>
+         <th>Fighter 2 <span style = "color: blue">(Points)</span></th>
+         <th>Tournament Name</th>
+         <th>Timestamp</th>
+         <th>Exchange Type</th>
+     </tr>
+    
+      {% for str in records %}
+          <tr><td>{{str[0]}} <b><span style = "color: red">({{str[5]}})</span></b></td><td>{{str[1]}} <b><span style = "color: blue">({{str[6]}})</span></b></td><td>{{str[2]}}</td><td>{{str[3]}}</td><td>{{str[4]}}</td></tr>
+      {% endfor %}
+      </table>
+      </div>
+      <h3>Totals:</h3>
+      <table class = "table">
+      <tr><td><span style = "color: red">Fighter 1 ({{fighter1}})</span></td><td><b>{{f1Total}}</b></td></tr>
+      <tr><td><span style = "color: blue">Fighter 2 ({{fighter2}})</span></td><td><b>{{f2Total}}</b></td></tr>
+      </table>
+    </div>
+{% endblock %}
