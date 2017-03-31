@@ -43,7 +43,12 @@
                                     <td>{{event.email}}</td>
                                     <td>{{event.event_date}}</td>
                                     <td>{{event.event_id}}</td>
-                                    <td><button type="submit" class="btn-sm btn-primary">See Tournaments</button></td>
+                                    <td>
+                                        <form method='POST' action="/events">
+                                            <input type="hidden" name="showTours" value={{event.event_id}}>
+                                            <button type="submit" class="btn-sm btn-primary">See Tournaments</button>
+                                        </form>
+                                    </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

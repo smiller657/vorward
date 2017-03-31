@@ -139,3 +139,12 @@ def getTournaments():
   conn.close()
   return results
   
+# Returns a list of events on the site
+def getTournamentsByEventId(e_id):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT t.tour_id, t.tour_name, t.match_length, t.ring_count, e.event_name from tournament t JOIN event e ON t.event_id = e.event_id WHERE e.event_id=%s;"
+  results = execute_query(query_string, conn, args=(e_id))
+  conn.close()
+  return results
