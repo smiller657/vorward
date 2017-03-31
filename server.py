@@ -58,7 +58,7 @@ def eventPage():
         pg.createTournament(event, tournament, matchLength, rings)
     
     return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
-
+    
 @app.route('/eventForm')
 def eventFormPage():
     # Determine if the user is logged in.
