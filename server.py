@@ -43,19 +43,19 @@ def eventPage():
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-	return render_template("events.html",events=events,user=user,eventsAvailable=hasEvents,tours=tours)
+        return render_template("events.html",events=events,user=user,eventsAvailable=hasEvents,tours=tours)
     if request.form['formType'] == 'eventForm':
         ename=request.form['event']
-	edate=request.form['date']
-	print("Unicode to string " + str(edate))
-	print("Event created with name " + ename)
+        edate=str(request.form['date'])
+        pg.createEvent(ename,edate,1)
     elif request.form['formType'] == 'tourneyForm':
         # Get info off Tournament form to create a tournament
         event=request.form['event']
         tournament=request.form['tournament']
         rings=request.form['rings']
         matchLength=request.form['matchLength']
-        print(event + " " + tournament + " " + rings + " " +  matchLength)
+        print("making tournament")
+        pg.createTournament(event, tournament, matchLength, rings)
     
     return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user,tours=tours)
 

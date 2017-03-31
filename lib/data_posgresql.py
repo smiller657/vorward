@@ -54,6 +54,24 @@ def registerUser(firstName, lastName, password, email, club, region, wantsNews):
   execute_query(query_string, conn, select=False,  args=(firstName, lastName, password, email, club, region, wantsNews))
   conn.close()
 
+# Creates a new tournament
+def createTournament(eventName, tournamentName, time, ringCount):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "INSERT INTO tournament (tour_name, match_length, ring_count, event_id) VALUES (%s, %s, %s, %s);"
+  execute_query(query_string, conn, select=False,  args=(tournamentName, time, ringCount, eventName))
+  conn.close()
+  
+#Creates a new event
+def createEvent(eventName, eventDate, ownerId):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "INSERT INTO event (event_name, event_date,owner_id) VALUES (%s, %s, 1);" 
+  execute_query(query_string, conn, select=False,  args=(eventName, eventDate))
+  conn.close()
+
 # Returns a list of all users on the site
 def listAllUsers():
   conn = connectToPostgres()
@@ -92,14 +110,14 @@ def logIn(email, password):
   return results
 
 # Creates a tournament for an event
-def createTournament(firstName, lastName, password, email, club, region, wantsNews):
-  conn = connectToPostgres()
-  if conn == None:
-    return None
-  #crypt(%s, gen_salt('bf')) - use in later lecture?
-  query_string = "INSERT INTO users (first_name, last_name, password, email, club, region, wants_news) VALUES (%s, %s, crypt(%s, gen_salt('bf')), %s, %s, %s, %s);"
-  execute_query(query_string, conn, select=False,  args=(firstName, lastName, password, email, club, region, wantsNews))
-  conn.close()
+#def createTournament(firstName, lastName, password, email, club, region, wantsNews):
+#  conn = connectToPostgres()
+#  if conn == None:
+#    return None
+#  #crypt(%s, gen_salt('bf')) - use in later lecture?
+#  query_string = "INSERT INTO users (first_name, last_name, password, email, club, region, wants_news) VALUES (%s, %s, crypt(%s, gen_salt('bf')), %s, %s, %s, %s);"
+#  execute_query(query_string, conn, select=False,  args=(firstName, lastName, password, email, club, region, wantsNews))
+#  conn.close()
 
 # Returns a list of events on the site
 def getEvents():
