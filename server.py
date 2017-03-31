@@ -127,8 +127,10 @@ def matchCreated():
     records = []
     f1Total = 0
     f2Total = 0
+    counter = 0
     
     for i in data:
+        counter += 1
         dbTimestamp = str(i[0])
         dbExchangeType = str(i[1])
         dbFighter1Points = str(i[2])
@@ -137,6 +139,8 @@ def matchCreated():
         f2Total += int(dbFighter2Points)
         newArr = [fighter1,fighter2,tournament,dbTimestamp,dbExchangeType,dbFighter1Points,dbFighter2Points]
         records.append(newArr)
+        pg.insertIntoMatch(fighter1, fighter2, dbExchangeType, dbFighter1Points, dbFighter2Points, dbTimestamp, counter)
+    
 
     return render_template('matchCreated.html', user=user, records=records, f1Total=f1Total, f2Total=f2Total, fighter1=fighter1, fighter2=fighter2);
     

@@ -158,6 +158,26 @@ def getTourNameByTourId(t_id):
   results = execute_query(query_string, conn, args=(t_id))
   conn.close()
   return results
+
+#Insert data into match database
+def insertIntoMatch(fighter1, fighter2, exchange_type, points1, points2, timestamp, counter):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "INSERT INTO match (fighter1, fighter2, exchange_type, points1, points2, timestamp, bout_id) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+  execute_query(query_string, conn, select=False,  args=(fighter1,fighter2,exchange_type,points1,points2,timestamp, counter))
+  conn.close()
+
+def idToName(u_id):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT last_name, first_name FROM users WHERE id = %s;"
+  results = execute_query(query_string, conn)
+  conn.close()
+  return results
+
+  
   
 # Returns a list of matches by a given tournament id
 def getMatchesByTourId(t_id):
