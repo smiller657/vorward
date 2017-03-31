@@ -1,5 +1,5 @@
 import os
-
+import json
 from lib.config import *
 from lib import data_posgresql as pg
 
@@ -98,6 +98,35 @@ def matchFormPage():
     {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
     return render_template('matchForm.html', eventsAvailable=hasEvents, events=events, user=user)
 
+@app.route('/matchCreated',methods=['GET', 'POST'])
+def matchCreated():
+    if 'userName' in session:
+        user = [session['userName'], session['email']]
+    else:
+        user = ['', '']
+    fighter1 = request.form['fighter1']
+    fighter2 = request.form['fighter2']
+    tournament = request.form['tournament']
+    passedJson = request.form['jsonDict']
+    
+    data = json.loads(passedJson)
+    
+    records = []
+    f1Total = 0
+    f2Total = 0
+    
+    for i in data:
+        dbTimestamp = str(i[0])
+        dbExchangeType = str(i[1])
+        dbFighter1Points = str(i[2])
+        dbFighter2Points = str(i[3])
+        f1Total += int(dbFighter1Points)
+        f2Total += int(dbFighter2Points)
+        newArr = [fighter1,fighter2,tournament,dbTimestamp,dbExchangeType,dbFighter1Points,dbFighter2Points]
+        records.append(newArr)
+
+    return render_template('matchCreated.html', user=user, records=records, f1Total=f1Total, f2Total=f2Total, fighter1=fighter1, fighter2=fighter2);
+    
 # @app.route('/tournaments', methods=['GET', 'POST'])
 # def tournamentsPage():
 #     # Determine if the user is logged in.
