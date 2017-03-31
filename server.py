@@ -75,6 +75,9 @@ def eventPage():
         #     print("making tournament")
         #     pg.createTournament(event, tournament, matchLength, rings)
     
+    return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
+
+
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:

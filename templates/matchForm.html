@@ -17,15 +17,71 @@
 
 <!-- Main Content -->
 <div class="container">
-<h2><time>00:00:00</time></h2>
+<style>
+    .timer { color: green;
+            background-color: gray;
+            border-radius: 5px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+        
+    }
+    #start {
+        color: green;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+    #stop {
+        color: red;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+    #clear {
+        color: gray;
+    }
+    #ttext {
+        color: white;
+    }
+</style>
+<div class = "timer">
+
+<h2 id = "ttext"><time>00:00</time></h2>
 <button id="start">start</button>
 <button id="stop">stop</button>
-<button id="clear">clear</button>
+</div>
 <script>
+
+    $.noConflict();
+    jQuery( document ).ready(function( $ ) {
+        $("#stop").click(function() {
+                $("#dialog").dialog({ width: 'auto' });
+                $("#timestamp").val($("#ttext").text());
+        });
+        $("#addDict").click(function() {
+                $("#dialog").dialog("close");
+        });
+    });
+    var matches = new Array ();
+    
+    function addToDictionary() {
+        var timestamp = document.getElementById('timestamp').value;
+        var exchangeType = document.getElementById('exchangeType').value;
+        var fighter1Points = document.getElementById('fighter1Points').value;
+        var fighter2Points = document.getElementById('fighter2Points').value;
+        
+        console.log(timestamp + " " + exchangeType + " " + fighter1Points + " " + fighter2Points);
+        matches.push(new Array(timestamp,exchangeType,fighter1Points,fighter2Points));
+        
+        var timestamp = document.getElementById('timestamp').value = '';
+        var exchangeType = document.getElementById('exchangeType').value = '';
+        var fighter1Points = document.getElementById('fighter1Points').value = '';
+        var fighter2Points = document.getElementById('fighter2Points').value = '';
+        
+     //   $("#dialog").dialog("close");
+    }
+    
+
+    
     var h1 = document.getElementsByTagName('h2')[0],
     start = document.getElementById('start'),
     stop = document.getElementById('stop'),
-    clear = document.getElementById('clear'),
     seconds = 0, minutes = 0, hours = 0,
     t;
 
@@ -40,7 +96,7 @@ function add() {
         }
     }
     
-    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    h1.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
 
     timer();
 }
@@ -53,18 +109,21 @@ function timer() {
 /* Start button */
 start.onclick = function () {
     timer();
+    document.getElementById("ttext").style.color = 'green';
+    start.disabled = true;
+    stop.disabled = false;
 }
 
 /* Stop button */
 stop.onclick = function() {
     clearTimeout(t);
+    document.getElementById("ttext").style.color = 'red';
+    stop.disabled = true;
+    start.disabled = false;
 }
 
 /* Clear button */
-clear.onclick = function() {
-    h1.textContent = "00:00:00";
-    seconds = 0; minutes = 0; hours = 0;
-}
+
 </script>
     <form class="form-horizontal" method='POST' action="/events">
         <h2>Create a match:</h2>
@@ -100,5 +159,12 @@ clear.onclick = function() {
             </div>
         </div>
     </form>
+</div>
+<div id="dialog" title="Enter in match info" hidden>
+  <p>Timestamp:&nbsp;<input type = "text" id = "timestamp" name = "timestamp" readonly></p>
+  <p>Exchange Type:&nbsp;<input type = "text" id = "exchangeType" name = "exchangeType"></p>
+  <p>Fighter 1 Points:&nbsp;<input type = "number" id = "fighter1Points" name = "fighter1Points">
+  &nbsp;Fighter 2 Points:&nbsp;<input type = "number" id = "fighter2Points" name = "fighter2Points"></p><br>
+  <button id = "addDict" onclick = "addToDictionary()">Add Match Info</button>
 </div>
 {% endblock %}
