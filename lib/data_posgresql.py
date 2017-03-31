@@ -108,3 +108,14 @@ def logIn(email, password):
   results = execute_query(query_string, conn, args=(email, password))
   conn.close()
   return results
+
+# Creates a tournament for an event
+def createTournament(firstName, lastName, password, email, club, region, wantsNews):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  #crypt(%s, gen_salt('bf')) - use in later lecture?
+  query_string = "INSERT INTO users (first_name, last_name, password, email, club, region, wants_news) VALUES (%s, %s, crypt(%s, gen_salt('bf')), %s, %s, %s, %s);"
+  execute_query(query_string, conn, select=False,  args=(firstName, lastName, password, email, club, region, wantsNews))
+  conn.close()
+

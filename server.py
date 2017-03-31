@@ -49,6 +49,7 @@ def eventPage():
         edate=str(request.form['date'])
         pg.createEvent(ename,edate,1)
     elif request.form['formType'] == 'tourneyForm':
+        # Get info off Tournament form to create a tournament
         event=request.form['event']
         tournament=request.form['tournament']
         rings=request.form['rings']
