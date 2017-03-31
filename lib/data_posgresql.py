@@ -148,3 +148,24 @@ def getTournamentsByEventId(e_id):
   results = execute_query(query_string, conn, args=(e_id))
   conn.close()
   return results
+
+# Returns a tournament name by its id value
+def getTourNameByTourId(t_id):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT tour_name from tournament WHERE tour_id=%s;"
+  results = execute_query(query_string, conn, args=(t_id))
+  conn.close()
+  return results
+  
+# Returns a list of matches by a given tournament id
+def getMatchesByTourId(t_id):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  #query_string = "SELECT m.match_id, u1.first_name, u1.last_name, u2.first_name, u2.last_name, m.SUM(points1), m.SUM(points2) from match m JOIN users u1 ON m.fighter1 = u.id JOIN users u2 ON u.fighter2=u2.id WHERE m.tour_id=%s GROUP BY m.match_id, m.fighter1, m.fighter2;"
+  query_string = "SELECT match_id, fighter1, fighter2, points1, points2 from match WHERE tour_id=%s"
+  results = execute_query(query_string, conn, args=(t_id))
+  conn.close()
+  return results

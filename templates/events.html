@@ -24,7 +24,7 @@
                 <a href="/eventForm" class="btn btn-success pull-right" role="button">Create an Event</a>
             </div>
             <div class="row AllEvents">
-                {% if eventsAvailable %}
+                {% if events %}
                     <h3>Upcoming Events:</h3>
                         <table class="table">
                             <thead>
@@ -45,7 +45,8 @@
                                     <td>{{event.event_id}}</td>
                                     <td>
                                         <form method='POST' action="/events">
-                                            <input type="hidden" name="showTours" value={{event.event_id}}>
+                                            <input type="hidden" name="showEventTour" value="" />
+                                            <input type="hidden" name="showTours" value={{event.event_id}} />
                                             <button type="submit" class="btn-sm btn-primary">See Tournaments</button>
                                         </form>
                                     </td>
@@ -57,9 +58,9 @@
                     <h4>Sorry, no events are available at this time.</h4>
                 {% endif %}
             </div> <!-- end div AllEvents -->
-            <div clas="AllTournaments">
+            <div class="allTournaments">
                 {% if tours %}
-                    <h3>Touraments:</h3>
+                    <h3>Tournaments  for {{tours[0].event_name}}:</h3>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -68,6 +69,7 @@
                                     <th>Ring Count</th>
                                     <th>Tournament ID</th>
                                     <th>Event Name</th>
+                                    <th>See Matches</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,12 +80,46 @@
                                         <td>{{tour.ring_count}}</td>
                                         <td>{{tour.tour_id}}</td>
                                         <td>{{tour.event_name}}</td>
+                                        <td>
+                                            <form method='POST' action="/events">
+                                                <input type="hidden" name="showEventTour" value={{event_id}} />
+                                                <input type="hidden" name="showTourMatch" value={{tour.tour_id}} />
+                                                <button type="submit" class="btn-sm btn-primary">See Matches</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                 {% endif %}
             </div> <!-- end div AllTouraments -->
+            <div clas="allMatches">
+                {% if matches %}
+                    <h3>Matches for {{tour_name[0][0]}}:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Fighter 1</th>
+                                    <th>Points</th>
+                                    <th>Fighter 2</th>
+                                    <th>Points</th>
+                                    <th>Match ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for match in matches %}
+                                    <tr>
+                                        <td>{{match.fighter1}}</td>
+                                        <td>{{match.points1}}</td>
+                                        <td>{{match.fighter2}}</td>
+                                        <td>{{match.points2}}</td>
+                                        <td>{{match.match_id}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                {% endif %}
+            </div> <!-- end div allMatches -->
         </div> <!--end div container -->
     </article>
 {% endblock %}
