@@ -35,20 +35,25 @@ def aboutPage():
 @app.route('/events', methods=['GET', 'POST'])
 def eventPage():
     # Determine if the user is logged in.
-    hasEvents = True    
-    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
-    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
-    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
-    if 'userName' in session:
-        user = [session['userName'], session['email']]
-    else:
-        user = ['', '']
-
-    if request.form['formType'] == 'eventForm':
+    hasEvents = True
+    # Select and display all events in the database
+    events = pg.getEvents()
+    tours = []
+    #If form completed, get info from it.
+    if request.method == 'POST':
+        print("test in post")
+        # Display the tournament information, if selected
+        if request.form['showTours']:
+            print("found showTours")
+            event_id = request.form['showTours']
+            print(event_id)
+            tours = pg.getTournamentsByEventId(event_id)
+    # Get the data off of the event form
+    if request.form['eventForm']:
         ename=request.form['event']
         edate=str(request.form['date'])
         pg.createEvent(ename,edate,1)
-    elif request.form['formType'] == 'tourneyForm':
+    elif request.form['tourneyForm']:
         # Get info off Tournament form to create a tournament
         event=request.form['event']
         tournament=request.form['tournament']
@@ -58,7 +63,14 @@ def eventPage():
         pg.createTournament(event, tournament, matchLength, rings)
     
     return render_template('events.html', eventsAvailable=hasEvents, events=events, user=user)
-    
+
+
+    if 'userName' in session:
+        user = [session['userName'], session['email']]
+    else:
+        user = ['', '']
+        return render_template("events.html",events=events,user=user,eventsAvailable=hasEvents,tours=tours)
+
 @app.route('/eventForm')
 def eventFormPage():
     # Determine if the user is logged in.
@@ -85,6 +97,30 @@ def matchFormPage():
     {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
     {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
     return render_template('matchForm.html', eventsAvailable=hasEvents, events=events, user=user)
+
+# @app.route('/tournaments', methods=['GET', 'POST'])
+# def tournamentsPage():
+#     # Determine if the user is logged in.
+#     hasEvents = True
+#     # Select and display all events in the database
+#     print("request args: " + request.args)
+#     #eventId = request.args.get('event_id')
+#     tours = pg.getTournaments()
+#     if 'userName' in session:
+#         user = [session['userName'], session['email']]
+#     else:
+#         user = ['', '']
+#         return render_template("tournaments.html",user=user,tours=tours)
+#     # if request.get['value'] == 'tourneyForm':
+#     #     # Get info off Tournament form to create a tournament
+#     #     event=request.form['event']
+#     #     tournament=request.form['tournament']
+#     #     rings=request.form['rings']
+#     #     matchLength=request.form['matchLength']
+#     #     print("making tournament")
+#     #     pg.createTournament(event, tournament, matchLength, rings)
+    
+#     return render_template('tournaments.html', tours=tours,user=user)
 
 @app.route('/tourneyForm')
 def tourneyFormPage():

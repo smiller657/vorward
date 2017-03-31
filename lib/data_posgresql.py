@@ -119,3 +119,32 @@ def logIn(email, password):
 #  execute_query(query_string, conn, select=False,  args=(firstName, lastName, password, email, club, region, wantsNews))
 #  conn.close()
 
+# Returns a list of events on the site
+def getEvents():
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT e.event_id, e.event_name, e.event_date, u.email from event AS e JOIN users AS u ON e.owner_id = u.id;"
+  results = execute_query(query_string, conn)
+  conn.close()
+  return results
+
+# Returns a list of events on the site
+def getTournaments():
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT t.tour_id, t.tour_name, t.match_length, t.ring_count, e.event_name from tournament t JOIN event e ON t.event_id = e.event_id;"
+  results = execute_query(query_string, conn)
+  conn.close()
+  return results
+  
+# Returns a list of events on the site
+def getTournamentsByEventId(e_id):
+  conn = connectToPostgres()
+  if conn == None:
+    return None
+  query_string = "SELECT t.tour_id, t.tour_name, t.match_length, t.ring_count, e.event_name from tournament t JOIN event e ON t.event_id = e.event_id WHERE e.event_id=%s;"
+  results = execute_query(query_string, conn, args=(e_id))
+  conn.close()
+  return results

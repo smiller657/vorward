@@ -21,27 +21,34 @@
     <article>
         <div class="container">
             <div class="col-sm-12">
-                <a href="/eventForm" class="btn btn-info pull-right" role="button">Create an Event</a>
+                <a href="/eventForm" class="btn btn-success pull-right" role="button">Create an Event</a>
             </div>
-            <div class="row">
+            <div class="row AllEvents">
                 {% if eventsAvailable %}
                     <h3>Upcoming Events:</h3>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Tournament Name</th>
-                                    <th>Club</th>
-                                    <th>Dates</th>
-                                    <th>Location</th>
+                                    <th>Event Name</th>
+                                    <th>Event POC</th>
+                                    <th>Date</th>
+                                    <th>Event ID</th>
+                                    <th>See Tournaments</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for event in events %}
                                     <tr>
-                                        <td>{{event.tourney}}</td>
-                                    <td>{{event.club}}</td>
-                                    <td>{{event.dates}}</td>
-                                    <td>{{event.location}}</td>
+                                        <td>{{event.event_name}}</td>
+                                    <td>{{event.email}}</td>
+                                    <td>{{event.event_date}}</td>
+                                    <td>{{event.event_id}}</td>
+                                    <td>
+                                        <form method='POST' action="/events">
+                                            <input type="hidden" name="showTours" value={{event.event_id}}>
+                                            <button type="submit" class="btn-sm btn-primary">See Tournaments</button>
+                                        </form>
+                                    </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -49,7 +56,34 @@
                 {% else %}
                     <h4>Sorry, no events are available at this time.</h4>
                 {% endif %}
-            </div>
-        </div>
+            </div> <!-- end div AllEvents -->
+            <div clas="AllTournaments">
+                {% if tours %}
+                    <h3>Touraments:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tournament Name</th>
+                                    <th>Match Length</th>
+                                    <th>Ring Count</th>
+                                    <th>Tournament ID</th>
+                                    <th>Event Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tour in tours %}
+                                    <tr>
+                                        <td>{{tour.tour_name}}</td>
+                                        <td>{{tour.match_length}}</td>
+                                        <td>{{tour.ring_count}}</td>
+                                        <td>{{tour.tour_id}}</td>
+                                        <td>{{tour.event_name}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                {% endif %}
+            </div> <!-- end div AllTouraments -->
+        </div> <!--end div container -->
     </article>
 {% endblock %}
