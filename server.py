@@ -44,9 +44,25 @@ def eventPage():
     #If form completed, get info from it.
     if request.method == 'POST':
         print("test in post to events")
-        # Display the match information using tour info, if selected
         print(request.form)
-        if len(request.form['showEventTour']) > 0:
+        if 'formType' in request.form:
+            print("in form type loop")
+            # Get the data off of the event form
+            if request.form['formType'] == 'eventForm':
+                ename=request.form['event']
+                edate=str(request.form['date'])
+                pg.createEvent(ename,edate,1)
+            elif request.form['formType'] == 'tourneyForm':
+                # Get info off Tournament form to create a tournament
+                event=request.form['event']
+                tournament=request.form['tournament']
+                rings=request.form['rings']
+                matchLength=request.form['matchLength']
+                print("making tournament")
+                pg.createTournament(event, tournament, matchLength, rings)
+        
+        # Display the match information using tour info, if selected
+        elif request.form['showEventTour']:
             print("found showEventTour")
             event_id=request.form['showEventTour']
             print(event_id)
@@ -61,19 +77,7 @@ def eventPage():
             print(event_id)
             tours = pg.getTournamentsByEventId(event_id)
             matches = []
-        # Get the data off of the event form
-        elif request.form['eventForm']:
-            ename=request.form['event']
-            edate=str(request.form['date'])
-            pg.createEvent(ename,edate,1)
-        elif request.form['tourneyForm']:
-            # Get info off Tournament form to create a tournament
-            event=request.form['event']
-            tournament=request.form['tournament']
-            rings=request.form['rings']
-            matchLength=request.form['matchLength']
-            print("making tournament")
-            pg.createTournament(event, tournament, matchLength, rings)
+
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:
