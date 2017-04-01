@@ -68,7 +68,7 @@ def createEvent(eventName, eventDate, ownerId):
   conn = connectToPostgres()
   if conn == None:
     return None
-  query_string = "INSERT INTO event (event_name, event_date,owner_id) VALUES (%s, %s, 1);" 
+  query_string = "INSERT INTO event (event_id, event_name, event_date,owner_id) VALUES (DEFAULT, %s, %s, 1);" 
   execute_query(query_string, conn, select=False,  args=(eventName, eventDate))
   conn.close()
 
@@ -160,12 +160,12 @@ def getTourNameByTourId(t_id):
   return results
 
 #Insert data into match database
-def insertIntoMatch(fighter1, fighter2, exchange_type, points1, points2, timestamp, counter):
+def insertIntoMatch(fighter1, fighter2, exchange_type, points1, points2, timestamp, counter, tour_id):
   conn = connectToPostgres()
   if conn == None:
     return None
-  query_string = "INSERT INTO match (fighter1, fighter2, exchange_type, points1, points2, timestamp, bout_id) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-  execute_query(query_string, conn, select=False,  args=(fighter1,fighter2,exchange_type,points1,points2,timestamp, counter))
+  query_string = "INSERT INTO match (fighter1, fighter2, exchange_type, points1, points2, timestamp, bout_id, tour_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+  execute_query(query_string, conn, select=False,  args=(fighter1,fighter2,exchange_type,points1,points2,timestamp, counter, tour_id))
   conn.close()
 
 def idToName(u_id):

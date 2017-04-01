@@ -77,7 +77,7 @@ def eventPage():
             print(event_id)
             tours = pg.getTournamentsByEventId(event_id)
             matches = []
-
+    events = pg.getEvents()
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:
@@ -91,28 +91,33 @@ def eventFormPage():
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-    hasEvents = True
-    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
-    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
-    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
-    return render_template('eventForm.html', eventsAvailable=hasEvents, events=events, user=user)
+    return render_template('eventForm.html', user=user)
 
 
-@app.route('/matchForm')
+@app.route('/matchForm',methods=['GET', 'POST'])
 def matchFormPage():
+    tour_id = 0
+    if request.method == 'POST':
+        print("test in post matchForm")
+        print(request.form)
+        # Display the match information using tour info, if selected
+        if request.form['matchTourId'] != "":
+            tour_id=request.form['matchTourId']
     # Determine if the user is logged in.
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-    hasEvents = True
-    events = [{'tourney': 'DC HEMA Open', 'club': 'Virginia Academy of Fencing', 'dates': 'January 13-15, 2017', 'location': 'National Harbor, MD'},
-    {'tourney': 'Shortpoint', 'club': 'Capital KDF', 'dates': 'April 1, 2017', 'location': 'Annadale, VA'},
-    {'tourney': 'Longpoint', 'club': 'Maryland KDF', 'dates': 'July 6-9, 2017', 'location': 'Baltimore, MD'}]
-    return render_template('matchForm.html', eventsAvailable=hasEvents, events=events, user=user)
+    return render_template('matchForm.html', user=user,tour_id=tour_id)
 
 @app.route('/matchCreated',methods=['GET', 'POST'])
 def matchCreated():
+    tour_id = 1
+    if request.method == 'POST':
+        print("test in post matchCreated")
+        # Display the match information using tour info, if selected
+        if request.form['matchTourId'] != "":
+            tour_id=request.form['matchTourId']
     if 'userName' in session:
         user = [session['userName'], session['email']]
     else:
@@ -139,7 +144,7 @@ def matchCreated():
         f2Total += int(dbFighter2Points)
         newArr = [fighter1,fighter2,tournament,dbTimestamp,dbExchangeType,dbFighter1Points,dbFighter2Points]
         records.append(newArr)
-        pg.insertIntoMatch(fighter1, fighter2, dbExchangeType, dbFighter1Points, dbFighter2Points, dbTimestamp, counter)
+        pg.insertIntoMatch(fighter1, fighter2, dbExchangeType, dbFighter1Points, dbFighter2Points, dbTimestamp, counter, tour_id)
     
 
     return render_template('matchCreated.html', user=user, records=records, f1Total=f1Total, f2Total=f2Total, fighter1=fighter1, fighter2=fighter2);

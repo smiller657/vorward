@@ -104,7 +104,10 @@
             <div clas="allMatches">
                 {% if matches %}
                     <div class="col-sm-12">
-                        <a href="/matchForm" class="btn btn-danger pull-right" role="button">Start a Match</a>
+                        <form method='POST' action="/matchForm">
+                            <input type="hidden" name="matchTourId" value={{tour_id}} />
+                            <button type="submit" class="btn btn-danger pull-right">Start a Match</button>
+                        </form>
                         <h3>Matches for {{tour_name[0][0]}}:</h3>
                     </div>
                         <table class="table">
