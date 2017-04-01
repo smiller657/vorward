@@ -62,7 +62,10 @@
             <div class="allTournaments">
                 {% if tours %}
                     <div class="col-sm-12">
-                        <a href="/tourneyForm" class="btn btn-warning pull-right" role="button">Create a Tournament</a>
+                        <form method='POST' action="/tourneyForm">
+                            <input type="hidden" name="tourEventId" value={{event_id}} />
+                            <button type="submit" class="btn btn-warning pull-right">Create a Tournament</button>
+                        </form>
                         <h3>Tournaments  for {{tours[0].event_name}}:</h3>
                     </div>
                         <table class="table">
@@ -101,7 +104,7 @@
             <div clas="allMatches">
                 {% if matches %}
                     <div class="col-sm-12">
-                        <a href="/tourneyForm" class="btn btn-danger pull-right" role="button">Start a Match</a>
+                        <a href="/matchForm" class="btn btn-danger pull-right" role="button">Start a Match</a>
                         <h3>Matches for {{tour_name[0][0]}}:</h3>
                     </div>
                         <table class="table">
