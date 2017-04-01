@@ -59,7 +59,7 @@ def createTournament(eventName, tournamentName, time, ringCount):
   conn = connectToPostgres()
   if conn == None:
     return None
-  query_string = "INSERT INTO tournament (tour_name, match_length, ring_count, event_id) VALUES (%s, %s, %s, %s);"
+  query_string = "INSERT INTO tournament (tour_id, tour_name, match_length, ring_count, event_id) VALUES (DEFAULT, %s, %s, %s, %s);"
   execute_query(query_string, conn, select=False,  args=(tournamentName, time, ringCount, eventName))
   conn.close()
   
