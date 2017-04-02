@@ -60,12 +60,17 @@
             </div> <!-- end div AllEvents -->
             <br />
             <div class="allTournaments">
-                {% if tours %}
+            {% if event_id > 0 %}
                     <div class="col-sm-12">
                         <form method='POST' action="/tourneyForm">
                             <input type="hidden" name="tourEventId" value={{event_id}} />
                             <button type="submit" class="btn btn-warning pull-right">Create a Tournament</button>
                         </form>
+            {% if not tours %}
+            <h3>Oops! There aren't any tournaments for this event yet. Why don't you click that beautiful orange button to get started?</h3>
+            {% endif %}
+            {% endif %}
+            {% if tours %}
                         <h3>Tournaments  for {{tours[0].event_name}}:</h3>
                     </div>
                         <table class="table">
@@ -102,12 +107,19 @@
             </div> <!-- end div AllTouraments -->
             <br />
             <div clas="allMatches">
-                {% if matches %}
+                {% if seematch %}
+                     {% if tours %}
                     <div class="col-sm-12">
                         <form method='POST' action="/matchForm">
                             <input type="hidden" name="matchTourId" value={{tour_id}} />
+                            {% if not matches %}
+                            <h3>There are no matches for this tournament yet. Why don't you create one?</h3>
+                            {% endif %}
                             <button type="submit" class="btn btn-danger pull-right">Start a Match</button>
                         </form>
+                    {% endif %}
+                    {% endif %}
+                    {% if matches %}
                         <h3>Matches for {{tour_name[0][0]}}:</h3>
                     </div>
                         <table class="table">

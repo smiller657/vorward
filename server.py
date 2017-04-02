@@ -39,6 +39,7 @@ def eventPage():
     tours = []
     matches = []
     event_id = 0
+    showTor = False
     tour_id = 0
     tour_name = ""
     #If form completed, get info from it.
@@ -60,9 +61,12 @@ def eventPage():
                 matchLength=request.form['matchLength']
                 print("making tournament")
                 pg.createTournament(event, tournament, matchLength, rings)
+            
         
         # Display the match information using tour info, if selected
         elif request.form['showEventTour']:
+            if request.form['showTourMatch']:
+                showTor = True
             print("found showEventTour")
             event_id=request.form['showEventTour']
             print(event_id)
@@ -82,7 +86,7 @@ def eventPage():
         user = [session['userName'], session['email']]
     else:
         user = ['', '']
-    return render_template("events.html",events=events,event_id=event_id, user=user, tours=tours, tour_id=tour_id, matches=matches, tour_name=tour_name)
+    return render_template("events.html",events=events,event_id=event_id, user=user, tours=tours, tour_id=tour_id, matches=matches, tour_name=tour_name, seematch=showTor)
 
 @app.route('/eventForm')
 def eventFormPage():
