@@ -77,7 +77,7 @@ def listAllUsers():
   conn = connectToPostgres()
   if conn == None:
     return None
-  query_string = "SELECT first_name, last_name, club, region from users;"
+  query_string = "SELECT id, first_name, last_name, club, region from users;"
   results = execute_query(query_string, conn)
   conn.close()
   return results
@@ -94,7 +94,7 @@ def listRegionUsers(email):
   if selectedRegion != None:
     print(selectedRegion)
     print(selectedRegion[0][0])
-    query_string2 = "SELECT first_name, last_name, club, region from users where region=%s;"
+    query_string2 = "SELECT id, first_name, last_name, club, region from users where region=%s;"
     results = execute_query(query_string2, conn, args=(selectedRegion[0][0],))
   conn.close()
   return results
@@ -196,7 +196,7 @@ def getMatchResultsByTourId(t_id):
   if conn == None:
     return None
   #query_string = "SELECT m.match_id, u1.first_name, u1.last_name, u2.first_name, u2.last_name, m.SUM(points1), m.SUM(points2) from match m JOIN users u1 ON m.fighter1 = u.id JOIN users u2 ON u.fighter2=u2.id WHERE m.tour_id=%s GROUP BY m.match_id, m.fighter1, m.fighter2;"
-  query_string = "SELECT match_id, fighter1, fighter2, SUM(points1), sum(points2) from match WHERE tour_id=%s GROUP BY match_id, fighter1, fighter2"
+  query_string = "SELECT match_id, fighter1, fighter2, SUM(points1) AS points1, sum(points2) AS points2 from match WHERE tour_id=%s GROUP BY match_id, fighter1, fighter2 ORDER BY match_id"
   results = execute_query(query_string, conn, args=(t_id))
   conn.close()
   return results
